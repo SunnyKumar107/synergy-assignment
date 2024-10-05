@@ -1,4 +1,4 @@
-import { Button } from './ui/button'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -17,7 +17,12 @@ const Header = () => {
           </div>
 
           <div className='flex items-center gap-4'>
-            <Button size='lg'>Create User</Button>
+            <Link
+              to='/create-new'
+              className='px-4 py-2 bg-emerald-600 text-white rounded-sm hover:bg-emerald-600/90'
+            >
+              Create User
+            </Link>
           </div>
         </div>
       </div>

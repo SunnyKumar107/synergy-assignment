@@ -16,6 +16,16 @@ const UserPage = () => {
     fetchUser()
   }, [])
 
+  const deleteUser = async (id: Number | undefined) => {
+    console.log('deleteUser', typeof id)
+    try {
+      const response = await usersService.deleteUserById(id as number)
+      console.log('response', response)
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
   return (
     <div className='flex h-screen items-center justify-center bg-primary-foreground'>
       <div className='bg-background py-6 px-4 rounded-2xl shaddow-md border'>
@@ -55,7 +65,9 @@ const UserPage = () => {
           </a>
           <div className='flex items-center space-x-4'>
             <Button variant='outline'>Edit</Button>
-            <Button variant='destructive'>Delete</Button>
+            <Button onClick={() => deleteUser(user?.id)} variant='destructive'>
+              Delete
+            </Button>
           </div>
         </div>
       </div>
