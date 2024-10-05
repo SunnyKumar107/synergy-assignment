@@ -1,11 +1,15 @@
-import { Button } from './components/ui/button'
+import { Route, Routes } from 'react-router-dom'
+import Home from './components/home'
+import UserPage from './components/user'
 
 function App() {
   return (
-    <div>
-      <h1 className='text-red-500 text-2xl'>Synergy Labs | Assignment</h1>
-      <Button>Click here</Button>
-    </div>
+    <>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/users/:id' element={<UserPage />} />
+      </Routes>
+    </>
   )
 }
 
