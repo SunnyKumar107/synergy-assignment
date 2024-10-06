@@ -1,127 +1,112 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from './ui/button'
 import { CircleAlert, LoaderCircle } from 'lucide-react'
 import usersService from '../services/users'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from './ui/dialog'
+import { usersContext } from '@/context/context'
 
 const UserForm = () => {
   const [pending, setPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const { users, setUsers } = useContext(usersContext)
 
   const createUser = async (e: any) => {
     e.preventDefault()
 
-    const name = e.target.name.value
-    const email = e.target.email.value
-    const username = e.target.username.value
-    const phone = e.target.phone.value
-    const website = e.target.website.value
-    const street = e.target.address.value.split(' ')[0]
-    const city = e.target.address.value.split(' ')[1]
-    const company = e.target.company.value
-
-    console.log(name, email, username, phone, website, company, street, city)
+    const newUser = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      username: e.target.username.value,
+      phone: e.target.phone.value,
+      website: e.target.website.value,
+      address: {
+        street: e.target.address.value.split(' ')[0],
+        city: e.target.address.value.split(' ')[1],
+        zipcode: e.target.address.value.split(' ')[2]
+      },
+      company: {
+        name: e.target.company.value
+      }
+    }
 
     setPending(true)
     try {
-      await usersService.createNewUser({
-        name,
-        email,
-        username,
-        phone,
-        website,
-        address: {
-          street,
-          city
-        },
-        company: {
-          name: company
-        }
-      })
-    } catch (error: any) {
-      console.log(error)
-      setErrorMessage(error.message)
+      const createdUser = await usersService.createNewUser(newUser)
+      users && setUsers([createdUser, ...users])
+    } catch (error) {
+      setErrorMessage('Failed to create user')
     }
     setPending(false)
   }
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-primary-foreground py-2'>
-      <div className='mx-3 w-full max-w-lg rounded-md bg-background px-8 py-12 shadow-sm md:p-16 shaddow-md border'>
-        <h1 className='text-center text-3xl font-bold'>Create User</h1>
-        <p className='mt-2 text-center text-foreground/60'>
-          Fill every field & create new user.
-        </p>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button size='lg' className='bg-emerald-600'>
+          Create new
+        </Button>
+      </DialogTrigger>
+      <DialogContent className='sm:max-w-[425px]'>
+        <DialogHeader>
+          <DialogTitle>Create User</DialogTitle>
+          <DialogDescription>
+            Fill every field & create new user.
+          </DialogDescription>
+        </DialogHeader>
         {errorMessage && (
           <p className='text-sm text-red-600'>
             <CircleAlert className='mr-1 inline h-4 w-4' /> {errorMessage}
           </p>
         )}
-        <form onSubmit={createUser} className='mt-8 flex flex-col gap-6'>
-          <div className='flex flex-col items-start gap-3'>
-            <Label htmlFor='name'>Name</Label>
-            <Input
-              type='text'
-              id='name'
-              name='name'
-              placeholder='John Doe'
-              required
-            />
-          </div>
-          <div className='flex flex-col items-start gap-3'>
-            <Label htmlFor='username'>Username</Label>
-            <Input
-              type='text'
-              id='username'
-              name='username'
-              placeholder='johndoe'
-              required
-            />
-          </div>
-          <div className='flex flex-col items-start gap-3'>
-            <Label htmlFor='email'>Email Address</Label>
-            <Input
-              type='text'
-              id='email'
-              name='email'
-              placeholder='john@example.com'
-              required
-            />
-          </div>
-          <div className='flex flex-col items-start gap-3'>
-            <Label htmlFor='phone'>Phone Number</Label>
-            <Input
-              type='text'
-              id='phone'
-              name='phone'
-              placeholder='+21-4568-624'
-              required
-            />
-          </div>
-          <div className='flex flex-col items-start gap-3'>
-            <Label htmlFor='address'>Address</Label>
-            <Input
-              type='text'
-              id='address'
-              name='address'
-              placeholder='Street & City'
-              required
-            />
-          </div>
-          <div className='flex flex-col items-start gap-3'>
-            <Label htmlFor='company'>Company Name</Label>
-            <Input
-              type='text'
-              id='company'
-              name='company'
-              placeholder='Synergy Labs'
-              required
-            />
-          </div>
-          <div className='flex flex-col items-start gap-3'>
-            <Label htmlFor='website'>Website</Label>
+        <form onSubmit={createUser} className='flex flex-col gap-4'>
+          <Input
+            type='text'
+            id='name'
+            name='name'
+            placeholder='Name'
+            required
+          />
+          <Input
+            type='email'
+            id='email'
+            name='email'
+            placeholder='Email Address'
+            required
+          />
+          <Input
+            type='text'
+            id='username'
+            name='username'
+            placeholder='Username'
+            required
+          />
+
+          <Input
+            type='text'
+            id='phone'
+            name='phone'
+            placeholder='Enter your phone number'
+            required
+          />
+          <Input
+            type='text'
+            id='company'
+            name='company'
+            placeholder='Company Name'
+            required
+          />
+          <div className='flex items-center space-x-4'>
+            <Label htmlFor='address'>Website</Label>
             <Input
               type='text'
               id='website'
@@ -130,12 +115,17 @@ const UserForm = () => {
               required
             />
           </div>
-          <Button
-            type='submit'
-            size='lg'
-            disabled={pending}
-            className='uppercase'
-          >
+          <div className='flex items-center space-x-4'>
+            <Label htmlFor='address'>Address</Label>
+            <Input
+              type='text'
+              id='address'
+              name='address'
+              placeholder='Street, City & Zip Code'
+              required
+            />
+          </div>
+          <Button type='submit' disabled={pending} className='uppercase'>
             {pending ? (
               <>
                 <LoaderCircle className='mb-0.5 mr-2 h-4 w-4 animate-spin' />
@@ -146,8 +136,8 @@ const UserForm = () => {
             )}
           </Button>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 

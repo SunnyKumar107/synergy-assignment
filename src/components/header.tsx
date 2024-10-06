@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import UserForm from './create-user-form'
 
 const Header = () => {
   return (
@@ -17,12 +17,7 @@ const Header = () => {
           </div>
 
           <div className='flex items-center gap-4'>
-            <Link
-              to='/create-new'
-              className='px-4 py-2 bg-emerald-600 text-white rounded-sm hover:bg-emerald-600/90'
-            >
-              Create User
-            </Link>
+            <UserForm />
           </div>
         </div>
       </div>
