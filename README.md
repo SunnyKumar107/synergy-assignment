@@ -1,50 +1,50 @@
-# React + TypeScript + Vite
+# User Management Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a User Management Application built with **React.js**, **TailwindCSS**, **Shadcn**, and **TypeScript**. It provides a simple and responsive interface for managing users with CRUD (Create, Read, Update, Delete) operations.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You can view the live version of the application at:
 
-## Expanding the ESLint configuration
+[Live URL](https://synergy-assignment-eight.vercel.app/)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
 
-- Configure the top-level `parserOptions` property like this:
+- **Create User:** Add new users with details such as name, email, and role.
+- **Read Users:** Display a list of all users in a responsive table.
+- **Update User:** Edit and update existing user details.
+- **Delete User:** Remove users from the system.
+- **Responsive UI:** Fully responsive design using TailwindCSS.
+- **Elegant UI Components:** Custom-built components using Shadcn and TypeScript.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Tech Stack
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **React.js**: JavaScript library for building user interfaces.
+- **TypeScript**: Typed superset of JavaScript.
+- **TailwindCSS**: Utility-first CSS framework for styling.
+- **Shadcn**: Custom component system built with Radix Primitives.
+- **Vite**: Fast build tool for modern web development.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Screenshots
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+![User Management Interface](./public/user-management.png)
+
+## Getting Started
+
+Follow the instructions below to set up the project locally.
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v14.x or higher)
+- [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/your-username/user-management-app.git
+   cd user-management-app
+   ```
