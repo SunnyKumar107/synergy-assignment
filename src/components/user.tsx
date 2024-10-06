@@ -31,10 +31,10 @@ const UserRow = ({
         <Link to={`/users/${user.id}`}>{user.name}</Link>
       </td>
       <td className='whitespace-nowrap text-center px-4 py-2 text-gray-100'>
-        {user.email}
+        <Link to={`/users/${user.id}`}>{user.email}</Link>
       </td>
       <td className='whitespace-nowrap text-center px-4 py-2 text-gray-100'>
-        {user.company.name}
+        <Link to={`/users/${user.id}`}>{user.company.name}</Link>
       </td>
       <td className='whitespace-nowrap text-center px-4 py-2'>
         <button className='text-white' onClick={() => deleteUserById(user.id)}>

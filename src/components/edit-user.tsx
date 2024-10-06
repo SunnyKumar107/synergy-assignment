@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { FormEvent, useContext, useState } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -7,6 +7,7 @@ import { CircleAlert, LoaderCircle } from 'lucide-react'
 import usersService from '../services/users'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -22,31 +23,36 @@ const EditForm = ({ user }: { user: User }) => {
   const [errorMessage, setErrorMessage] = useState('')
   const { users, setUsers } = useContext(usersContext)
 
-  const updateUser = async (e: any) => {
+  const updateUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const form = e.target as HTMLFormElement
 
     const userForUpdate = {
       id: user.id,
-      name: e.target.name.value,
-      email: e.target.email.value,
-      username: e.target.username.value,
-      phone: e.target.phone.value,
-      website: e.target.website.value,
+      name: form.fullname.value,
+      email: form.email.value,
+      username: form.username.value,
+      phone: form.phone.value,
+      website: form.website.value,
       address: {
-        street: e.target.address.value.split(' ')[0],
-        city: e.target.address.value.split(' ')[1],
-        zipcode: e.target.address.value.split(' ')[2]
+        street: form.address.value.split(' ')[0],
+        city: form.address.value.split(' ')[1],
+        zipcode: form.address.value.split(' ')[2]
       },
       company: {
-        name: e.target.company.value
+        name: form.company.value
       }
     }
     if (users === null) return
 
     setPending(true)
     try {
+      // If user id is greater than 10, it doesn't exist in database
+      // and we need to update it
+
       if (user.id > 10) {
-        setUsers(users.map((u: User) => (u.id === user.id ? userForUpdate : u)))
+        setUsers(users.map((u) => (u.id === user.id ? userForUpdate : u)))
         setPending(false)
         toast('User updated successfully')
 
@@ -54,7 +60,7 @@ const EditForm = ({ user }: { user: User }) => {
       }
       const updatedUser = await usersService.updateUser(user.id, userForUpdate)
 
-      setUsers(users.map((u: User) => (u.id === user.id ? updatedUser : u)))
+      setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)))
       toast('User updated successfully')
     } catch (e) {
       console.log(e)
@@ -88,10 +94,10 @@ const EditForm = ({ user }: { user: User }) => {
         <form onSubmit={updateUser} className='flex flex-col gap-4'>
           <Input
             type='text'
-            id='name'
-            name='name'
+            id='fullname'
+            name='fullname'
             defaultValue={user.name}
-            placeholder='Name'
+            placeholder='Full Name'
             required
           />
           <Input
@@ -155,15 +161,17 @@ const EditForm = ({ user }: { user: User }) => {
               required
             />
           </div>
-          <Button type='submit' disabled={pending} className='uppercase'>
-            {pending ? (
-              <>
-                <LoaderCircle className='mb-0.5 mr-2 h-4 w-4 animate-spin' />
-              </>
-            ) : (
-              'Update'
-            )}
-          </Button>
+          <DialogClose asChild>
+            <Button type='submit' disabled={pending} className='uppercase'>
+              {pending ? (
+                <>
+                  <LoaderCircle className='mb-0.5 mr-2 h-4 w-4 animate-spin' />
+                </>
+              ) : (
+                'Update'
+              )}
+            </Button>
+          </DialogClose>
         </form>
       </DialogContent>
     </Dialog>

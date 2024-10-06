@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import usersService from '../services/users'
 import Header from './header'
-import { User } from '@/lib/definitions'
 import { usersContext } from '@/context/context'
 import UserRow from './user'
 import { LoaderCircle } from 'lucide-react'
@@ -13,7 +12,7 @@ const Home = () => {
   const deleteUser = async (id: number) => {
     if (!users) return
     const res = await usersService.deleteUserById(id)
-    setUsers(users.filter((user: User) => user.id !== id))
+    setUsers(users.filter((user) => user.id !== id))
     toast('User deleted successfully')
     return res
   }
@@ -44,7 +43,7 @@ const Home = () => {
             </thead>
 
             <tbody>
-              {users.map((user: User, i: number) => (
+              {users.map((user, i) => (
                 <UserRow
                   key={i}
                   user={user}

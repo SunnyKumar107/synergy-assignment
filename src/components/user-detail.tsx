@@ -26,7 +26,7 @@ const UserDetails = () => {
     if (!users) return
     setPending(true)
     await usersService.deleteUserById(id)
-    setUsers(users.filter((user: User) => user.id !== id))
+    setUsers(users.filter((user) => user.id !== id))
     setPending(false)
     toast('User deleted successfully')
     navigate('/')
