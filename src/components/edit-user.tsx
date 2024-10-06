@@ -41,14 +41,16 @@ const EditForm = ({ user }: { user: User }) => {
         name: e.target.company.value
       }
     }
+    if (users === null) return
 
     setPending(true)
     try {
       const updatedUser = await usersService.updateUser(user.id, userForUpdate)
-      users &&
-        setUsers(users.map((u: User) => (u.id === user.id ? updatedUser : u)))
+
+      setUsers(users.map((u: User) => (u.id === user.id ? updatedUser : u)))
       toast('User updated successfully')
-    } catch (error) {
+    } catch (e) {
+      console.log(e)
       toast('Failed to update user')
       setErrorMessage('Failed to update user')
     }

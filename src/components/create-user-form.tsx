@@ -1,5 +1,4 @@
-import { useContext, useState } from 'react'
-
+import { FormEvent, useContext, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from './ui/button'
@@ -15,37 +14,43 @@ import {
 } from './ui/dialog'
 import { usersContext } from '@/context/context'
 import { toast } from 'sonner'
+import { User } from '@/lib/definitions'
 
 const UserForm = () => {
   const [pending, setPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const { users, setUsers } = useContext(usersContext)
 
-  const createUser = async (e: any) => {
+  const createUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const newUser = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      username: e.target.username.value,
-      phone: e.target.phone.value,
-      website: e.target.website.value,
+    const form = e.target as HTMLFormElement
+
+    const newUser: User = {
+      id: users !== null ? users.length + 1 : 1,
+      email: form.email.value,
+      name: form.fullname.value,
+      username: form.username.value,
+      phone: form.phone.value,
+      website: form.website.value,
       address: {
-        street: e.target.address.value.split(' ')[0],
-        city: e.target.address.value.split(' ')[1],
-        zipcode: e.target.address.value.split(' ')[2]
+        street: form.address.value.split(' ')[0],
+        city: form.address.value.split(' ')[1],
+        zipcode: form.address.value.split(' ')[2]
       },
       company: {
-        name: e.target.company.value
+        name: form.company.value
       }
     }
 
+    if (users === null) return
     setPending(true)
     try {
       const createdUser = await usersService.createNewUser(newUser)
-      users && setUsers([createdUser, ...users])
+      setUsers([createdUser, ...users])
       toast('User created successfully')
-    } catch (error) {
+    } catch (e) {
+      console.log(e)
       toast('Failed to create user')
       setErrorMessage('Failed to create user')
     }
@@ -74,9 +79,9 @@ const UserForm = () => {
         <form onSubmit={createUser} className='flex flex-col gap-4'>
           <Input
             type='text'
-            id='name'
-            name='name'
-            placeholder='Name'
+            id='fullname'
+            name='fullname'
+            placeholder='Full Name'
             required
           />
           <Input

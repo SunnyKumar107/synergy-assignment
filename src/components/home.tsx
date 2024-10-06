@@ -11,8 +11,9 @@ const Home = () => {
   const { users, setUsers } = useContext(usersContext)
 
   const deleteUser = async (id: number) => {
+    if (!users) return
     const res = await usersService.deleteUserById(id)
-    users && setUsers(users.filter((user: User) => user.id !== id))
+    setUsers(users.filter((user: User) => user.id !== id))
     toast('User deleted successfully')
     return res
   }

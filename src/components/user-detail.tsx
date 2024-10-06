@@ -9,7 +9,7 @@ import EditForm from './edit-user'
 import { toast } from 'sonner'
 
 const UserDetails = () => {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | undefined>()
   const [pending, setPending] = useState(false)
   const id = useParams().id
   const navigate = useNavigate()
@@ -18,14 +18,15 @@ const UserDetails = () => {
   useEffect(() => {
     if (users) {
       const userExist = users.find((user: User) => user.id === Number(id))
-      userExist && setUser(userExist)
+      setUser(userExist)
     }
-  }, [users])
+  }, [id, users])
 
   const deleteUser = async (id: number) => {
+    if (!users) return
     setPending(true)
     await usersService.deleteUserById(id)
-    users && setUsers(users.filter((user: User) => user.id !== id))
+    setUsers(users.filter((user: User) => user.id !== id))
     setPending(false)
     toast('User deleted successfully')
     navigate('/')

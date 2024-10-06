@@ -7,7 +7,7 @@ const Header = () => {
         <div className='flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between'>
           <div>
             <h1 className='text-3xl font-bold text-gray-900 sm:text-3xl'>
-              User Table
+              User Management
             </h1>
 
             <p className='mt-1.5 text-sm text-gray-500'>
