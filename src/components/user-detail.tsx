@@ -33,10 +33,8 @@ const UserDetails = () => {
 
   if (!user) {
     return (
-      <div className='flex h-screen items-center justify-center'>
-        <div className='bg-background py-6 px-4 rounded-2xl shaddow-md border'>
-          <h1 className='text-6xl font-bold text-gray-700'>Loading...</h1>
-        </div>
+      <div className='flex h-screen items-center justify-center text-emerald-600'>
+        <LoaderCircle className=' animate-spin' size={40} />
       </div>
     )
   }
