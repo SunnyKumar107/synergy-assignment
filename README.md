@@ -44,7 +44,23 @@ Make sure you have the following installed:
 
 1. **Clone the repository:**
 
-   ```bash
-   git clone https://github.com/your-username/user-management-app.git
-   cd user-management-app
+  ```bash
+   git clone https://github.com/SunnyKumar107/synergy-assignment
+   cd synergy-assignment
+   ```
+
+2. **Install dependencies.**
+
+  ```bash
+   npm install
+   or 
+   yarn install
+   ```
+
+3. **Run the project.**
+   
+  ```bash
+   npm run dev
+   or 
+   yarn run dev
    ```
