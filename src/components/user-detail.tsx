@@ -5,6 +5,7 @@ import { User } from '@/lib/definitions'
 import { Button } from './ui/button'
 import { LoaderCircle } from 'lucide-react'
 import { usersContext } from '@/context/context'
+import EditForm from './edit-user'
 
 const UserDetails = () => {
   const [user, setUser] = useState<User | null>(null)
@@ -38,9 +39,11 @@ const UserDetails = () => {
   }
 
   return (
-    <div className='flex h-screen items-center justify-center bg-primary-foreground'>
+    <div className='flex h-screen items-center justify-center bg-primary-foreground px-2'>
       <div className='bg-background py-6 px-4 rounded-2xl shaddow-md border'>
-        <h1 className='text-6xl font-bold text-emerald-600'>{user.name}</h1>
+        <h1 className='text-5xl md:text-6xl font-bold text-emerald-600'>
+          {user.name}
+        </h1>
         <div className='mt-2 flex justify-between'>
           <div className='flex flex-col gap-1'>
             <p className='text-sm font-semibold text-gray-500'>
@@ -74,9 +77,7 @@ const UserDetails = () => {
             {user?.website}
           </a>
           <div className='flex items-center space-x-4'>
-            <Button className='w-[90px]' variant='outline'>
-              Edit
-            </Button>
+            <EditForm user={user} />
             <Button
               className='w-[90px]'
               onClick={() => deleteUser(user.id)}

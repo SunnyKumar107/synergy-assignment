@@ -4,6 +4,7 @@ import Header from './header'
 import { User } from '@/lib/definitions'
 import { usersContext } from '@/context/context'
 import UserRow from './user'
+import { LoaderCircle } from 'lucide-react'
 
 const Home = () => {
   const { users, setUsers } = useContext(usersContext)
@@ -15,16 +16,14 @@ const Home = () => {
   }
 
   return (
-    <div>
+    <div className='min-h-screen'>
       <Header />
       {!users ? (
-        <div className='flex h-screen items-center justify-center'>
-          <div className='bg-background py-6 px-4 rounded-2xl shaddow-md border'>
-            <h1 className='text-6xl font-bold text-gray-700'>Loading...</h1>
-          </div>
+        <div className='flex h-[400px] items-center justify-center text-emerald-600'>
+          <LoaderCircle className=' animate-spin' size={40} />
         </div>
       ) : (
-        <div className='overflow-x-auto px-2 py-1'>
+        <div className='overflow-x-auto md:p-1'>
           <table className='min-w-full bg-white text-sm'>
             <thead className='ltr:text-left rtl:text-right'>
               <tr className='bg-gray-600'>

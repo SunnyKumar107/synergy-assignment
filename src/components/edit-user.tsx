@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -14,16 +14,23 @@ import {
   DialogTrigger
 } from './ui/dialog'
 import { usersContext } from '@/context/context'
+import { User } from '@/lib/definitions'
 
-const UserForm = () => {
+const EditForm = ({ user }: { user: User }) => {
   const [pending, setPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const { users, setUsers } = useContext(usersContext)
+  const [userForUpdate, setUserForUpdate] = useState<User | null>(null)
 
-  const createUser = async (e: any) => {
+  useEffect(() => {
+    setUserForUpdate(user)
+  }, [user])
+
+  const updateUser = async (e: any) => {
     e.preventDefault()
 
-    const newUser = {
+    const userForUpdate = {
+      id: user.id,
       name: e.target.name.value,
       email: e.target.email.value,
       username: e.target.username.value,
@@ -41,26 +48,29 @@ const UserForm = () => {
 
     setPending(true)
     try {
-      const createdUser = await usersService.createNewUser(newUser)
-      users && setUsers([createdUser, ...users])
+      const updatedUser = await usersService.updateUser(user.id, userForUpdate)
+      users &&
+        setUsers(users.map((u: User) => (u.id === user.id ? updatedUser : u)))
     } catch (error) {
       setErrorMessage('Failed to create user')
     }
     setPending(false)
   }
 
+  if (!user) return null
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size='lg' className='bg-emerald-600 hover:bg-emerald-600/90'>
-          Create new
+        <Button className='w-[90px]' variant='outline'>
+          Edit
         </Button>
       </DialogTrigger>
       <DialogContent className='max-w-[360px] md:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Create User</DialogTitle>
+          <DialogTitle>Edit User</DialogTitle>
           <DialogDescription>
-            Fill every field & create new user.
+            Make changes in user details here.
           </DialogDescription>
         </DialogHeader>
         {errorMessage && (
@@ -68,11 +78,12 @@ const UserForm = () => {
             <CircleAlert className='mr-1 inline h-4 w-4' /> {errorMessage}
           </p>
         )}
-        <form onSubmit={createUser} className='flex flex-col gap-4'>
+        <form onSubmit={updateUser} className='flex flex-col gap-4'>
           <Input
             type='text'
             id='name'
             name='name'
+            defaultValue={user.name}
             placeholder='Name'
             required
           />
@@ -80,12 +91,14 @@ const UserForm = () => {
             type='email'
             id='email'
             name='email'
+            defaultValue={user.email}
             placeholder='Email Address'
             required
           />
           <Input
             type='text'
             id='username'
+            defaultValue={user.username}
             name='username'
             placeholder='Username'
             required
@@ -95,6 +108,7 @@ const UserForm = () => {
             type='text'
             id='phone'
             name='phone'
+            defaultValue={user.phone}
             placeholder='Enter your phone number'
             required
           />
@@ -102,6 +116,7 @@ const UserForm = () => {
             type='text'
             id='company'
             name='company'
+            defaultValue={user.company.name}
             placeholder='Company Name'
             required
           />
@@ -111,6 +126,7 @@ const UserForm = () => {
               type='text'
               id='website'
               name='website'
+              defaultValue={user.website}
               placeholder='https://example.com'
               required
             />
@@ -121,6 +137,13 @@ const UserForm = () => {
               type='text'
               id='address'
               name='address'
+              defaultValue={
+                user.address.street +
+                ' ' +
+                user.address.city +
+                ' ' +
+                user.address.zipcode
+              }
               placeholder='Street, City & Zip Code'
               required
             />
@@ -129,10 +152,9 @@ const UserForm = () => {
             {pending ? (
               <>
                 <LoaderCircle className='mb-0.5 mr-2 h-4 w-4 animate-spin' />
-                Creating
               </>
             ) : (
-              'Create'
+              'Update'
             )}
           </Button>
         </form>
@@ -141,4 +163,4 @@ const UserForm = () => {
   )
 }
 
-export default UserForm
+export default EditForm

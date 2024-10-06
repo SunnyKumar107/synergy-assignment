@@ -6,13 +6,12 @@ const Header = () => {
       <div className='mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8'>
         <div className='flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between'>
           <div>
-            <h1 className='text-2xl font-bold text-gray-900 sm:text-3xl'>
-              Blog Posts
+            <h1 className='text-3xl font-bold text-gray-900 sm:text-3xl'>
+              User Table
             </h1>
 
             <p className='mt-1.5 text-sm text-gray-500'>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure,
-              recusandae.
+              User table with CRUD operations
             </p>
           </div>
 
