@@ -45,6 +45,13 @@ const EditForm = ({ user }: { user: User }) => {
 
     setPending(true)
     try {
+      if (user.id > 10) {
+        setUsers(users.map((u: User) => (u.id === user.id ? userForUpdate : u)))
+        setPending(false)
+        toast('User updated successfully')
+
+        return
+      }
       const updatedUser = await usersService.updateUser(user.id, userForUpdate)
 
       setUsers(users.map((u: User) => (u.id === user.id ? updatedUser : u)))
