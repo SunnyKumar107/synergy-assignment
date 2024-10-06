@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useState } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -15,16 +15,12 @@ import {
 } from './ui/dialog'
 import { usersContext } from '@/context/context'
 import { User } from '@/lib/definitions'
+import { toast } from 'sonner'
 
 const EditForm = ({ user }: { user: User }) => {
   const [pending, setPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const { users, setUsers } = useContext(usersContext)
-  const [userForUpdate, setUserForUpdate] = useState<User | null>(null)
-
-  useEffect(() => {
-    setUserForUpdate(user)
-  }, [user])
 
   const updateUser = async (e: any) => {
     e.preventDefault()
@@ -51,8 +47,10 @@ const EditForm = ({ user }: { user: User }) => {
       const updatedUser = await usersService.updateUser(user.id, userForUpdate)
       users &&
         setUsers(users.map((u: User) => (u.id === user.id ? updatedUser : u)))
+      toast('User updated successfully')
     } catch (error) {
-      setErrorMessage('Failed to create user')
+      toast('Failed to update user')
+      setErrorMessage('Failed to update user')
     }
     setPending(false)
   }

@@ -5,6 +5,7 @@ import { User } from '@/lib/definitions'
 import { usersContext } from '@/context/context'
 import UserRow from './user'
 import { LoaderCircle } from 'lucide-react'
+import { toast } from 'sonner'
 
 const Home = () => {
   const { users, setUsers } = useContext(usersContext)
@@ -12,6 +13,7 @@ const Home = () => {
   const deleteUser = async (id: number) => {
     const res = await usersService.deleteUserById(id)
     users && setUsers(users.filter((user: User) => user.id !== id))
+    toast('User deleted successfully')
     return res
   }
 

@@ -14,6 +14,7 @@ import {
   DialogTrigger
 } from './ui/dialog'
 import { usersContext } from '@/context/context'
+import { toast } from 'sonner'
 
 const UserForm = () => {
   const [pending, setPending] = useState(false)
@@ -43,7 +44,9 @@ const UserForm = () => {
     try {
       const createdUser = await usersService.createNewUser(newUser)
       users && setUsers([createdUser, ...users])
+      toast('User created successfully')
     } catch (error) {
+      toast('Failed to create user')
       setErrorMessage('Failed to create user')
     }
     setPending(false)

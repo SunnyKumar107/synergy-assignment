@@ -5,6 +5,7 @@ import { usersContext } from './context/context'
 import { User } from './lib/definitions'
 import { useEffect, useState } from 'react'
 import usersService from './services/users'
+import { Toaster } from './components/ui/sonner'
 
 function App() {
   const [users, setUsers] = useState<User[] | null>(null)
@@ -25,6 +26,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/users/:id' element={<UserDetails />} />
         </Routes>
+        <Toaster />
       </usersContext.Provider>
     </>
   )

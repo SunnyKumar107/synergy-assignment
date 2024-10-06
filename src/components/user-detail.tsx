@@ -6,13 +6,14 @@ import { Button } from './ui/button'
 import { LoaderCircle } from 'lucide-react'
 import { usersContext } from '@/context/context'
 import EditForm from './edit-user'
+import { toast } from 'sonner'
 
 const UserDetails = () => {
   const [user, setUser] = useState<User | null>(null)
   const [pending, setPending] = useState(false)
   const id = useParams().id
   const navigate = useNavigate()
-  const { users } = useContext(usersContext)
+  const { users, setUsers } = useContext(usersContext)
 
   useEffect(() => {
     if (users) {
@@ -24,7 +25,9 @@ const UserDetails = () => {
   const deleteUser = async (id: number) => {
     setPending(true)
     await usersService.deleteUserById(id)
+    users && setUsers(users.filter((user: User) => user.id !== id))
     setPending(false)
+    toast('User deleted successfully')
     navigate('/')
   }
 
